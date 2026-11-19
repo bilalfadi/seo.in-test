@@ -1,0 +1,18 @@
+name: Smoke-test deployed Cloudflare preview
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - scripts/smoke-preview.mjs
+      - .github/workflows/smoke-preview.yml
+permissions:
+  contents: read
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node scripts/smoke-preview.mjs
