@@ -29,3 +29,5 @@ jobs:
 # rerun after screenshot syntax fix
 
 # Full sitemap audit rerun
+
+# Retry after XML parser fix
