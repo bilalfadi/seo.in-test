@@ -25,3 +25,5 @@ jobs:
           name: seogroupbuy-rendered-visual-comparison
           path: visual-audit/
           if-no-files-found: ignore
+
+# rerun after screenshot syntax fix
