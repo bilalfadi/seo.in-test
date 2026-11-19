@@ -2,7 +2,7 @@ import {writeFileSync} from 'node:fs';
 const ORIGIN='https://seogroupbuy.in', PREVIEW='https://seo-in-test.bilalfadi11221333.workers.dev';
 const headers={'user-agent':'Mozilla/5.0 (compatible; SiteParityAudit/1.0)','cache-control':'no-cache'};
 async function get(url){const c=new AbortController(),t=setTimeout(()=>c.abort(),25000);try{const r=await fetch(url,{headers,redirect:'follow',signal:c.signal});return {status:r.status,url:r.url,html:await r.text()}}finally{clearTimeout(t)}}
-function meta(h,n){return (h.match(new RegExp('<meta[^>]+name=["\\']'+n+'["\\'][^>]+content=["\\']([^"\\']*)','i'))||h.match(new RegExp('<meta[^>]+content=["\\']([^"\\']*)["\\'][^>]+name=["\\']'+n+'["\\']','i'))||[])[1]||''}
+function meta(h,n){const tags=h.match(/<meta\\b[^>]*>/gi)||[];for(const tag of tags){const name=(tag.match(/name=["']([^"']+)["']/i)||[])[1]||'';if(name.toLowerCase()===n.toLowerCase())return (tag.match(/content=["']([^"']*)["']/i)||[])[1]||''}return ''}
 function title(h){return (h.match(/<title[^>]*>([\s\S]*?)<\/title>/i)||[])[1]?.replace(/&amp;/g,'&').trim()||''}
 function h1(h){return [...h.matchAll(/<h1[^>]*>([\s\S]*?)<\/h1>/gi)].map(x=>x[1].replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim()).join(' | ')}
 function links(h){return [...new Set([...h.matchAll(/<a\b[^>]*href=["']([^"'#]+)["']/gi)].map(x=>x[1].trim()).filter(x=>!x.startsWith('javascript:')&&!x.startsWith('mailto:')&&!x.startsWith('tel:')))].sort()}
