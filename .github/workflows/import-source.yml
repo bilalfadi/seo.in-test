@@ -25,6 +25,7 @@ jobs:
           NODE
           tar -xf source.tar
           rm -rf transfer source.tar
+          find .github/workflows -type f ! -name import-source.yml -delete || true
       - name: Commit extracted source as normal repository files
         run: |
           git config user.name "github-actions[bot]"
