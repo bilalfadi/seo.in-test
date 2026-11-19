@@ -1,0 +1,25 @@
+name: Compare preview against original live website
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - scripts/compare-live.mjs
+      - .github/workflows/compare-live.yml
+permissions:
+  contents: read
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node scripts/compare-live.mjs
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: live-vs-preview-parity-report
+          path: parity-report.json
+          if-no-files-found: ignore
