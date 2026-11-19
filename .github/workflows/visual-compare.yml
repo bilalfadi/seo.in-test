@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - scripts/visual-compare.mjs
+      - scripts/mobile-functional-audit.mjs
       - .github/workflows/visual-compare.yml
 permissions:
   contents: read
@@ -19,11 +20,14 @@ jobs:
       - run: npm install --no-save playwright
       - run: npx playwright install --with-deps chromium
       - run: node scripts/visual-compare.mjs
+      - run: node scripts/mobile-functional-audit.mjs
       - uses: actions/upload-artifact@v4
         if: always()
         with:
           name: seogroupbuy-rendered-visual-comparison
-          path: visual-audit/
+          path: |
+            visual-audit/
+            mobile-functional-audit/
           if-no-files-found: ignore
 
 # rerun after screenshot syntax fix
