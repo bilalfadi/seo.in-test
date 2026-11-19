@@ -1,0 +1,100 @@
+{
+  "rewrites": [
+    {
+      "source": "/screaming-frog-website-audit-tool",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/screaming-frog-website-audit-tool/",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/all-tools",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/pricing",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/faq",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/blog",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/blog/:path*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/tool/:path*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/about-us",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/contact-us",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/contact",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/privacy-policy",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/privacy",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/terms",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/terms-and-conditions",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/refund-policy",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/affiliate",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/affliate",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/dmca",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/dmca-complaint",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/themes-plugins",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/private-accounts",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/tools-limits",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/",
+      "destination": "/index.html"
+    }
+  ]
+}

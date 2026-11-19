@@ -1,0 +1,227 @@
+import {Button} from '@/components/ui/button';
+import {ArrowRight} from 'lucide-react';
+import {motion} from 'motion/react';
+import {Link} from 'react-router-dom';
+import {usePageSeo} from '../hooks/usePageSeo';
+import type {Product} from '../data/products';
+import {formatUsd, productPath} from '../data/products';
+
+import {SHOP_SIGNUP_URL} from '../data/shopLinks';
+
+const DEFAULT_BUY = SHOP_SIGNUP_URL;
+
+function SectionRule() {
+  return <hr className="my-14 border-0 border-t border-white/10 md:my-16" />;
+}
+
+type Props = {
+  product: Product;
+};
+
+export function ProductPage({product}: Props) {
+  const path = productPath(product.slug);
+  const buyHref = product.buyHref ?? DEFAULT_BUY;
+  const logoSrc = `https://www.google.com/s2/favicons?domain=${product.domain}&sz=128`;
+
+  usePageSeo({
+    title: product.title,
+    description: product.description,
+    path,
+  });
+
+  const benefitRows = [
+    {benefit: 'Affordable Access', helps: 'Use premium features without full retail pricing'},
+    {benefit: 'Simple Setup', helps: 'Get started quickly after purchase confirmation'},
+    {benefit: 'Team Friendly', helps: 'Useful for freelancers, agencies, and SEO teams'},
+    {benefit: 'Reliable Support', helps: 'Reach us when you need help with access'},
+    {benefit: 'Flexible Plans', helps: 'Choose monthly or yearly based on your workload'},
+  ] as const;
+
+  return (
+    <main className="flex-grow bg-black pt-20">
+      <div className="container mx-auto max-w-6xl px-4 py-10 md:py-14">
+        <p className="mb-6 text-sm text-zinc-500">
+          <Link to="/" className="hover:text-white transition-colors">
+            Home
+          </Link>
+          <span className="mx-2">/</span>
+          <Link to="/all-tools" className="hover:text-white transition-colors">
+            Tools
+          </Link>
+          <span className="mx-2">/</span>
+          <span className="text-zinc-300">{product.name}</span>
+        </p>
+
+        <div className="grid items-start gap-10 lg:grid-cols-2 lg:gap-14">
+          <div>
+            <div className="overflow-hidden rounded-2xl border border-white/10 bg-zinc-950 ring-1 ring-white/5">
+              <div className="flex min-h-[280px] w-full items-center justify-center bg-gradient-to-b from-white/[0.06] to-transparent p-10 md:min-h-[320px]">
+                <img
+                  src={logoSrc}
+                  alt={product.name}
+                  className="max-h-56 w-auto object-contain"
+                  width={224}
+                  height={224}
+                  referrerPolicy="no-referrer"
+                />
+              </div>
+            </div>
+
+            <a href={buyHref} target="_blank" rel="noopener noreferrer" className="mt-4 flex lg:hidden">
+              <Button className="h-12 w-full rounded-xl bg-emerald-600 text-base font-bold hover:bg-emerald-500">
+                Buy Now <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </a>
+          </div>
+
+          <div>
+            <h1 className="text-3xl font-bold leading-tight font-display md:text-4xl lg:text-[2.75rem]">
+              {product.name}
+            </h1>
+
+            <div className="mt-6 flex flex-wrap items-end gap-3">
+              <div className="flex items-baseline gap-1">
+                <span className="text-5xl font-bold tracking-tight font-display text-white">
+                  ${formatUsd(product.priceMonthly)}
+                </span>
+                <span className="text-lg text-zinc-500">/month</span>
+              </div>
+              <span className="mb-1 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold text-zinc-300">
+                or ${formatUsd(product.priceYearly)}/year
+              </span>
+            </div>
+
+            <p className="mt-6 text-base leading-relaxed text-zinc-400">{product.shortDesc}</p>
+
+            <div className="mt-8 hidden flex-col gap-3 lg:flex">
+              <a href={buyHref} target="_blank" rel="noopener noreferrer">
+                <Button className="h-14 w-full rounded-xl bg-emerald-600 text-base font-bold hover:bg-emerald-500">
+                  Buy Now <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <SectionRule />
+
+        <section>
+          <h2 className="text-2xl font-bold font-display md:text-3xl">Pricing &amp; Features</h2>
+          <div className="mt-6 overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02]">
+            <table className="w-full text-left text-sm">
+              <thead className="bg-white/5 text-xs font-bold uppercase tracking-widest text-zinc-400">
+                <tr>
+                  <th className="px-5 py-4">Plan</th>
+                  <th className="px-5 py-4">Price</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-white/10">
+                <tr className="text-zinc-300">
+                  <td className="px-5 py-4 font-semibold text-white">Monthly</td>
+                  <td className="px-5 py-4 text-zinc-400">${formatUsd(product.priceMonthly)} per month</td>
+                </tr>
+                <tr className="text-zinc-300">
+                  <td className="px-5 py-4 font-semibold text-white">Yearly</td>
+                  <td className="px-5 py-4 text-zinc-400">${formatUsd(product.priceYearly)} per year</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div className="mt-8 overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02]">
+            <table className="w-full text-left text-sm">
+              <thead className="bg-white/5 text-xs font-bold uppercase tracking-widest text-zinc-400">
+                <tr>
+                  <th className="px-5 py-4">Benefit</th>
+                  <th className="px-5 py-4">How It Helps</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-white/10">
+                {benefitRows.map((row) => (
+                  <tr key={row.benefit} className="text-zinc-300">
+                    <td className="px-5 py-4 font-semibold text-white">{row.benefit}</td>
+                    <td className="px-5 py-4 text-zinc-400">{row.helps}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <SectionRule />
+
+        <section>
+          <motion.h2
+            initial={{opacity: 0, y: 12}}
+            whileInView={{opacity: 1, y: 0}}
+            viewport={{once: true}}
+            className="text-2xl font-bold font-display md:text-3xl"
+          >
+            What Is {product.name}?
+          </motion.h2>
+          <div className="mt-8 grid gap-6 md:grid-cols-2">
+            <article className="rounded-2xl border border-white/10 bg-zinc-950/80 p-6">
+              <h3 className="text-lg font-bold font-display text-white">Overview</h3>
+              <p className="mt-3 text-sm leading-relaxed text-zinc-400">{product.description}</p>
+            </article>
+            <article className="rounded-2xl border border-white/10 bg-zinc-950/80 p-6">
+              <h3 className="text-lg font-bold font-display text-white">Why Teams Use It</h3>
+              <p className="mt-3 text-sm leading-relaxed text-zinc-400">
+                {product.name} helps with everyday SEO and marketing workflows while keeping costs lower
+                through group buy pricing — ideal for freelancers, agencies, and in-house teams.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <SectionRule />
+
+        <section>
+          <h2 className="text-2xl font-bold font-display md:text-3xl">Key Benefits of {product.name}</h2>
+          <div className="mt-8 grid gap-6 md:grid-cols-3">
+            {[
+              {
+                title: 'Lower Monthly Cost',
+                body: `Get ${product.name} access at a group buy price instead of paying full retail every month.`,
+              },
+              {
+                title: 'Faster Workflows',
+                body: 'Use the tool for research, content, design, or audits without waiting on large budget approvals.',
+              },
+              {
+                title: 'Easy to Start',
+                body: 'Purchase your plan, get access confirmed, and start using the tool for your projects right away.',
+              },
+            ].map(({title, body}) => (
+              <article key={title} className="rounded-2xl border border-white/10 bg-zinc-950/80 p-6">
+                <h3 className="text-lg font-bold font-display text-white">{title}</h3>
+                <p className="mt-3 text-sm leading-relaxed text-zinc-400">{body}</p>
+              </article>
+            ))}
+          </div>
+        </section>
+      </div>
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'SoftwareApplication',
+            name: product.name,
+            applicationCategory: 'BusinessApplication',
+            operatingSystem: 'Web',
+            description: product.description,
+            offers: {
+              '@type': 'AggregateOffer',
+              priceCurrency: 'USD',
+              lowPrice: String(product.priceMonthly),
+              highPrice: String(product.priceYearly),
+              offerCount: 2,
+            },
+          }),
+        }}
+      />
+    </main>
+  );
+}

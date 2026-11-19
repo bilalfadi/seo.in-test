@@ -1,0 +1,26 @@
+---
+import Page from '../layouts/Page.astro';
+import OriginalApp from '../components/OriginalApp';
+import {products,productPath} from '../../src/data/products';
+import {staticPages} from '../../src/data/staticPages';
+import {getCompetitorMeta} from '../../src/data/competitorMeta';
+import {withBrandTitle} from '../../src/seo/site';
+const defaults={
+ 'all-tools':['SEO Group Buy | All Tools','Explore all available group buy SEO and AI tools.'],
+ 'blog':['Blog | SEO Group Buy','Guides and articles about group buy SEO and AI tools from SEO Group Buy.'],
+ 'pricing':['Pricing | SEO Group Buy','Compare group buy SEO tools pricing plans.'],
+ 'faq':['FAQ | SEO Group Buy','Answers to common questions about group buy SEO tools.']
+};
+export function getStaticPaths(){
+ const routes=[...Object.entries(defaults).map(([path,[title,description]])=>({path,title:withBrandTitle(title),description})),
+  ...products.map(p=>({path:productPath(p.slug).slice(1),title:withBrandTitle(p.title),description:p.description})),
+  ...staticPages.map(p=>({path:p.slug,title:withBrandTitle(p.title),description:p.description}))];
+ return routes.map(({path,title,description})=>({params:{slug:path},props:{title,description,path}}));
+}
+const {path,title,description}=Astro.props;
+const pathname='/'+path.replace(/^\/+|\/+$/g,'');
+const robots=import.meta.env.PUBLIC_PRODUCTION_INDEXABLE==='true'?'index,follow':'noindex,nofollow';
+---
+<Page title={title} description={description} pathname={pathname} robots={robots}>
+ <OriginalApp path={pathname} client:load />
+</Page>

@@ -1,0 +1,1 @@
+# Astro prerenders each route. Do not rewrite product pages to /index.html.

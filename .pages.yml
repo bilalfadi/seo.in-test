@@ -1,0 +1,109 @@
+media:
+  input: public/media
+  output: /media
+content:
+  - name: products
+    label: Products
+    type: collection
+    path: content/products
+    filename: '{primary}.json'
+    view:
+      primary: slug
+    operations:
+      create: false
+      delete: false
+      rename: false
+    format: json
+    fields:
+      - name: slug
+        label: Slug
+        type: string
+        required: true
+      - name: name
+        label: Product Name
+        type: string
+      - name: domain
+        label: Tool Domain
+        type: string
+      - name: category
+        label: Category
+        type: string
+      - name: priceMonthly
+        label: Monthly Price USD
+        type: number
+      - name: priceYearly
+        label: Yearly Price USD
+        type: number
+      - name: buyHref
+        label: Existing Checkout URL
+        type: string
+      - name: title
+        label: SEO Title Override (optional)
+        type: string
+      - name: description
+        label: Meta Description Override (optional)
+        type: text
+      - name: shortDesc
+        label: Product Intro Override (optional)
+        type: text
+  - name: pages
+    label: Pages and Blog Articles
+    type: collection
+    path: content/pages
+    filename: '{primary}.json'
+    view:
+      primary: slug
+    operations:
+      create: false
+      delete: false
+      rename: false
+    format: json
+    fields:
+      - name: slug
+        label: Original URL Slug
+        type: string
+      - name: heading
+        label: Heading
+        type: string
+      - name: title
+        label: SEO Title Override (optional)
+        type: string
+      - name: seoDescription
+        label: SEO Description Override (optional)
+        type: text
+      - name: kind
+        label: Page Type
+        type: select
+        options:
+          - label: Page
+            value: static
+          - label: Blog
+            value: blog
+      - name: paragraphs
+        label: Original Article Paragraphs
+        type: text
+        list: true
+  - name: homepage
+    label: Homepage Hero Content
+    type: file
+    path: content/homepage.json
+    format: json
+    fields:
+      - name: badge
+        label: Hero Badge
+        type: string
+      - name: heading
+        label: Hero Heading
+        type: string
+      - name: headingAccent
+        label: Hero Highlighted Heading
+        type: string
+      - name: description
+        label: Hero Description
+        type: text
+      - name: primaryButton
+        label: Primary Button Text
+        type: string
+      - name: secondaryButton
+        label: Secondary Button Text
+        type: string

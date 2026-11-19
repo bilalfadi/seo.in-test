@@ -1,0 +1,20 @@
+---
+import '../styles.css';
+const {title, description, pathname='/', robots='noindex,nofollow'}=Astro.props;
+const origin='https://seogroupbuy.in';
+const canonical=origin + (pathname==='/'?'/':pathname.replace(/\/$/,'') );
+const ogImage=origin+'/og-image.svg';
+const schema=JSON.stringify({'@context':'https://schema.org','@graph':[{'@type':'Organization','name':'SEO Group Buy','url':origin+'/','logo':ogImage},{'@type':'WebSite','name':'SEO Group Buy','url':origin+'/'}]});
+---
+<!doctype html><html lang="en"><head>
+<meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta name="robots" content={robots}/><title>{title}</title><meta name="description" content={description}/>
+<link rel="canonical" href={canonical}/><meta name="theme-color" content="#000000"/><link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+<meta name="google-site-verification" content="QAwiIFPOR5SYQV2WyIKbWERVFJ77xtw2kTYPvi5BeIU"/>
+<meta property="og:type" content="website"/><meta property="og:site_name" content="SEO Group Buy"/>
+<meta property="og:title" content={title}/><meta property="og:description" content={description}/>
+<meta property="og:url" content={canonical}/><meta property="og:image" content={ogImage}/>
+<meta name="twitter:card" content="summary_large_image"/><meta name="twitter:title" content={title}/>
+<meta name="twitter:description" content={description}/><meta name="twitter:image" content={ogImage}/>
+<script type="application/ld+json" set:html={schema}/>
+</head><body><slot/></body></html>
