@@ -1,0 +1,35 @@
+name: Repair lockfile and verify Cloudflare build
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - package.json
+      - package-lock.json
+      - .github/workflows/repair-lockfile.yml
+permissions:
+  contents: write
+jobs:
+  repair-and-build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - name: Regenerate lockfile from package.json
+        run: npm install --package-lock-only --ignore-scripts --no-audit --no-fund
+      - name: Save corrected lockfile
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+bilalfadi@users.noreply.github.com"
+          git add package-lock.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Fix incomplete npm lockfile for clean Cloudflare installs"
+            git push
+          fi
+      - name: Verify clean install
+        run: npm ci --no-audit --no-fund
+      - name: Run Astro build
+        run: npm run build
