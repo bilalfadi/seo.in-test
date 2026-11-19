@@ -1,0 +1,45 @@
+name: Verify third-site Astro Cloudflare build
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'astro/**'
+      - 'src/**'
+      - 'content/**'
+      - 'public/**'
+      - 'package.json'
+      - 'astro.config.mjs'
+      - '.github/workflows/verify-build.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install dependencies
+        run: npm install --no-audit --no-fund
+      - name: Build Astro static site
+        run: npm run build
+      - name: Verify generated pages and assets
+        run: |
+          test -f dist/index.html
+          test -f dist/sitemap.xml
+          test -f dist/favicon.svg
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          const sitemap = fs.readFileSync('public/sitemap.xml', 'utf8');
+          const expected = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(m => new URL(m[1]).pathname);
+          const routes = expected.map(path => path==='/'?'dist/index.html':'dist'+path.replace(/\/$/,'')+'/index.html');
+          const missing = routes.filter(p=>!fs.existsSync(p) && !fs.existsSync(p.replace('/index.html','.html')));
+          const home = fs.readFileSync('dist/index.html','utf8');
+          console.log('Expected sitemap URLs:',expected.length,'Missing routes:',missing.length);
+          if(missing.length) {console.error('Missing:',missing);process.exitCode=1}
+          if(!home.includes('noindex,nofollow')) throw new Error('Missing preview robots guard');
+          if(!home.includes('<h1')) throw new Error('Missing SSR homepage H1');
+          NODE
