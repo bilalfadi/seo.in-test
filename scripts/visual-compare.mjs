@@ -25,7 +25,7 @@ for(const path of pages){
     background:getComputedStyle(document.body).backgroundColor
    }));
    pair[name]={status:response?.status()||0,...data};
-   await page.screenshot({path:\`visual-audit/\${path.replaceAll('/','_')||'home'}-\${name}.png\`,fullPage:true});
+   await page.screenshot({path:'visual-audit/'+(path.replaceAll('/','_')||'home')+'-'+name+'.png',fullPage:true});
   }catch(e){pair[name]={error:String(e.message||e)}}finally{await page.close()}
  }
  const a=pair.origin||{},b=pair.preview||{};
