@@ -3,7 +3,7 @@ import { writeFileSync, mkdirSync } from 'node:fs';
 const origin='https://seogroupbuy.in', preview='https://seo-in-test.bilalfadi11221333.workers.dev';
 const browser=await chromium.launch({headless:true});
 const sitemap=await fetch(origin+'/sitemap.xml').then(async r=>{if(!r.ok)throw new Error('Original sitemap HTTP '+r.status);return r.text()});
-const pages=[...new Set([...sitemap.matchAll(/<loc>(.*?)<\\/loc>/g)].map(m=>new URL(m[1].replaceAll('&amp;','&')).pathname))];
+const pages=[...new Set([...sitemap.matchAll(new RegExp('<loc>(.*?)</loc>','g'))].map(m=>new URL(m[1].replaceAll('&amp;','&')).pathname))];
 const screenshotPaths=new Set(['/','/all-tools','/pricing','/faq','/blog','/tool/ahrefs-group-buy','/tool/semrush-group-buy']);
 const report=[];
 mkdirSync('visual-audit',{recursive:true});
