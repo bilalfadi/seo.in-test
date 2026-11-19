@@ -1,0 +1,37 @@
+name: Import original third-site Astro source
+on:
+  push:
+    paths:
+      - 'transfer/source.tar.br.b64'
+      - '.github/workflows/import-source.yml'
+permissions:
+  contents: write
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Restore source files from lossless archive
+        run: |
+          node --input-type=module <<'NODE'
+          import fs from 'node:fs';
+          import {brotliDecompressSync} from 'node:zlib';
+          const b64=fs.readFileSync('transfer/source.tar.br.b64','utf8').trim();
+          fs.writeFileSync('source.tar',brotliDecompressSync(Buffer.from(b64,'base64')));
+          NODE
+          tar -xf source.tar
+          rm -rf transfer source.tar
+      - name: Commit extracted source as normal repository files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git status --short | tail -20
+          if ! git diff --cached --quiet; then
+            git commit -m "Import exact third-site Astro React Pages CMS source"
+            git push
+          fi
