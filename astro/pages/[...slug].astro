@@ -5,13 +5,14 @@ import {products,productPath} from '../../src/data/products';
 import {staticPages} from '../../src/data/staticPages';
 import {getCompetitorMeta} from '../../src/data/competitorMeta';
 import {withBrandTitle} from '../../src/seo/site';
-const defaults={
- 'all-tools':['SEO Group Buy | All Tools','Explore all available group buy SEO and AI tools.'],
- 'blog':['Blog | SEO Group Buy','Guides and articles about group buy SEO and AI tools from SEO Group Buy.'],
- 'pricing':['Pricing | SEO Group Buy','Compare group buy SEO tools pricing plans.'],
- 'faq':['FAQ | SEO Group Buy','Answers to common questions about group buy SEO tools.']
-};
 export function getStaticPaths(){
+ const defaults={
+  'all-tools':['SEO Group Buy | All Tools','Explore all available group buy SEO and AI tools.'],
+  'blog':['Blog | SEO Group Buy','Guides and articles about group buy SEO and AI tools from SEO Group Buy.'],
+  'pricing':['Pricing | SEO Group Buy','Compare group buy SEO tools pricing plans.'],
+  'faq':['FAQ | SEO Group Buy','Answers to common questions about group buy SEO tools.']
+ };
+
  const routes=[...Object.entries(defaults).map(([path,[title,description]])=>({path,title:withBrandTitle(title),description})),
   ...products.map(p=>({path:productPath(p.slug).slice(1),title:withBrandTitle(p.title),description:p.description})),
   ...staticPages.map(p=>({path:p.slug,title:withBrandTitle(p.title),description:p.description}))];
