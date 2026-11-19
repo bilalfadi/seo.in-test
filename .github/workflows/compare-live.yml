@@ -25,3 +25,5 @@ jobs:
           if-no-files-found: ignore
 
 # parity audit parser fix deployed
+
+# run parity check after parser correction
